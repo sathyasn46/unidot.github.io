@@ -1,0 +1,84 @@
+
+<%@ Language=VBScript %>
+<!--METADATA TYPE="typelib"  
+UUID="CD000000-8B95-11D1-82DB-00C04FB1625D"  
+NAME="CDO for Windows 2000 Library" --> 
+<!--METADATA TYPE="typelib"  
+UUID="00000205-0000-0010-8000-00AA006D2EA4"  
+NAME="ADODB Type Library" -->
+
+
+<%
+
+	'Response.Write Request.Form
+	
+	dim svlBodyStr 
+	
+	svlBodyStr = "<font color=blue><b>Name: </b></font>" & Request.Form("Name") & "<br /> "
+	
+	svlBodyStr = svlBodyStr & "<font color=blue><b>Designation : </b></font>" & Request.Form("title") & "<br />"
+
+	svlBodyStr = svlBodyStr & "<font color=blue><b>Company Name : </b></font>" & Request.Form("cname") & "<br />"
+
+	svlBodyStr = svlBodyStr & "<font color=blue><b>Address : </b></font>" & Request.Form("Address") & "<br />"
+	
+	svlBodyStr = svlBodyStr & "<font color=blue><b>City : </b></font>" & Request.Form("City") & "<br />"
+	
+	svlBodyStr = svlBodyStr & "<font color=blue><b>State : </b></font>" & Request.Form("State") & "<br /> "
+	
+	svlBodyStr = svlBodyStr & "<font color=blue><b>Pincode : </b></font>" & Request.Form("Zip") & "<br /> "
+	
+	svlBodyStr = svlBodyStr & "<font color=blue><b>Phone : </b></font>" & Request.Form("Phone") & "<br />"
+	
+	svlBodyStr = svlBodyStr & "<font color=blue><b>Fax : </b></font>" & Request.Form("Fax") & "<br />"
+
+	svlBodyStr = svlBodyStr & "<font color=blue><b>Email : </b></font>" & Request.Form("Email") & "<br /> "
+	
+	svlBodyStr = svlBodyStr & "<font color=blue><b>Products/Services Required : </b></font>" & Request.Form("ProductsRequired") & ""
+	 
+	'Response.Write "<br>" & svlBodyStr
+
+Dim strTo
+Dim strSubject 
+Dim strBody 
+Dim objCDOMail 
+
+
+sch = "http://schemas.microsoft.com/cdo/configuration/" 
+
+Set cdoConfig = CreateObject("CDO.Configuration")  
+With cdoConfig.Fields  
+	.Item(cdoSendUsingMethod) = cdoSendUsingPort  
+	.Item(cdoSMTPServer) = "unidot.co.in"
+	.Item(cdoSMTPAuthenticate) = 1  
+	.Item(cdoSendUsername) = "sales@unidot.co.in"
+	.Item(cdoSendPassword) = "unidot"
+	.Update  
+End With 
+
+Set cdoMessage = CreateObject("CDO.Message")  
+With cdoMessage 
+	On Error resume next
+	Set .Configuration = cdoConfig 
+	.From = "sales@unidot.co.in"
+	.To = "unidot_flexo@yahoo.com,symbiosyss@yahoo.com"
+	'.cc = to mail id
+	.Subject = "ENQUIRY FROM WEBSITE" 
+	.HTMLBody= svlBodyStr
+	'.TextBody= "text" 
+	.Send 
+End With 
+Set cdoMessage = Nothing 
+Set cdoConfig = Nothing 
+
+Response.Redirect("enq_status.html" )
+
+'response.redirect= "enq_status.html" 
+
+
+%>
+
+
+
+
+
